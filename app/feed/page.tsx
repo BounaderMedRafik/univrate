@@ -1,6 +1,11 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Button, buttonVariants } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -12,10 +17,36 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { useUser } from "@clerk/nextjs";
 
-import { ArrowRight, ChevronDown, Star } from "lucide-react";
-import React, { useState } from "react";
+import { ArrowRight, ChevronDown, Loader, Star, User } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import supabase from "../supabase/supabaseClient";
+import { Slider } from "@/components/ui/slider";
+import { Input } from "@/components/ui/input";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const page = () => {
+  const [universities, setUniversities] = useState([{}]);
+  const [loading, setLoading] = useState(true); // add loading state
+
+  useEffect(() => {
+    const fetchUnivs = async () => {
+      setLoading(true); // set loading to true when fetching
+      const { data, error } = await supabase.from("universities").select("*");
+
+      if (data) {
+        setUniversities(data);
+      } else {
+        console.log("haha mknch");
+      }
+      if (error) {
+        console.log(error);
+      }
+      setLoading(false); // set loading to false when done
+    };
+
+    fetchUnivs();
+  }, []);
+
   return (
     <div className="wrapper">
       <div className="py-5 flex items-center  justify-between">
@@ -37,25 +68,28 @@ const page = () => {
         </div>
       </div>
 
-      <div className=" grid sm:grid-cols-1 md:grid-cols-2 gap-5">
-        <UnivItem
-          rating={7}
-          name={"Chadli ben djedid"}
-          adress={"Chadli ben djedid - El taref 36"}
-          pic={
-            "https://elmaghrebelawsat.dz/wp-content/uploads/2021/12/56393145_2262382347146083_3903177905357717504_n.jpg"
-          }
-        />
-        <UnivItem
-          rating={9}
-          name={"USTHB"}
-          adress={"USTHB - Algeir"}
-          pic={
-            "https://fgc.usthb.dz/wp-content/uploads/2023/11/DEPIXLISED-INSTITUT-WITHOUT-TRASH-1024x473.jpg"
-          }
-        />
-        {/* this one should be repetean from database  */}
-      </div>
+      {loading ? (
+        <div className="flex justify-center items-center min-h-[50vh]">
+          <Loader size={30} className=" animate-spin opacity-75" />
+        </div>
+      ) : (
+        <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-5">
+          {universities.map((item, i) => (
+            <div key={i}>
+              <UnivItem
+                //@ts-ignore
+                rating={item.Rating}
+                //@ts-ignore
+                name={item.Name}
+                //@ts-ignore
+                adress={`${item.Name} - ${item.Adress}`}
+                //@ts-ignore
+                pic={item.Pic}
+              />
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
@@ -91,7 +125,19 @@ const UnivItem = ({
               <div className="text-sm font-semibold opacity-75">{adress}</div>
             </div>
             <div className="flex items-center justify-end">
-              <Button variant={"link"}>vérifier l'évaluation ↗</Button>
+              <Dialog>
+                <DialogTrigger>
+                  <Button variant={"link"}>vérifier l'évaluation ↗</Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <CheckEval
+                    rating={rating}
+                    name={name}
+                    adress={adress}
+                    pic={pic}
+                  />
+                </DialogContent>
+              </Dialog>
               <Dialog>
                 <DialogTrigger asChild>
                   <Button size={"sm"}>Evaluation</Button>
@@ -124,7 +170,25 @@ const UnivDialog = ({
   adress: string;
   pic: string;
 }) => {
+  const { user } = useUser();
   const [success, setSuccess] = useState(false);
+  const [rate, setRate] = useState(0);
+  const [comment, setComment] = useState("");
+  const [userName, setUserName] = useState(user?.fullName);
+  const [loading, setLoading] = useState(false);
+
+  const insertEval = async () => {
+    setLoading(true);
+    console.log(userName, rate, comment, name);
+    const { data, error } = await supabase.from("evaluations").insert({
+      Name: userName,
+      Rating: rate,
+      Comment: comment,
+      university: name,
+    });
+    setLoading(false);
+    setSuccess(true);
+  };
 
   return (
     <div>
@@ -151,37 +215,45 @@ const UnivDialog = ({
                 <Button variant={"link"}>1523 evaluation ↗</Button>
               </div>
             </div>
-            <div className="mt-4">
+            <div className="mt-4 flex flex-col">
               <Label>Évaluez l'université</Label>
-              <Select>
-                <SelectTrigger className="mt-2">
-                  <SelectValue placeholder="1/10" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="1">1/10</SelectItem>
-                  <SelectItem value="2">2/10</SelectItem>
-                  <SelectItem value="3">3/10</SelectItem>
-                  <SelectItem value="4">4/10</SelectItem>
-                  <SelectItem value="5">5/10</SelectItem>
-                  <SelectItem value="6">6/10</SelectItem>
-                  <SelectItem value="7">7/10</SelectItem>
-                  <SelectItem value="8">8/10</SelectItem>
-                  <SelectItem value="9">9/10</SelectItem>
-                  <SelectItem value="10">10/10</SelectItem>
-                </SelectContent>
-              </Select>
+              <Input
+                className="mt-1"
+                min={0}
+                max={10}
+                value={rate}
+                //@ts-ignore
+                onChange={(e) => setRate(e.target.value)}
+                type="number"
+                placeholder="0"
+              />
             </div>
             <div className="mt-4">
               <Label>laissez un commentaire</Label>
-              <Textarea className="mt-2" />
+              <Textarea
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+                className="mt-2"
+              />
             </div>
             <div className="mt-5">
               <Button
-                onClick={() => setSuccess(true)}
+                disabled={loading}
+                onClick={() => {
+                  insertEval();
+                }}
                 className="w-full"
                 size={"lg"}
               >
-                Soumettre une évaluation
+                <div>
+                  {loading ? (
+                    <div>
+                      <Loader className=" animate-spin" size={13} />
+                    </div>
+                  ) : (
+                    "Soumettre une évaluation"
+                  )}
+                </div>
               </Button>
             </div>
           </div>
@@ -212,6 +284,69 @@ const SuccessPage = () => {
       <div className="mt-4 flex justify-center items-center">
         <Button size={"lg"}>Vérifiez votre evaluation</Button>
       </div>
+    </div>
+  );
+};
+
+const CheckEval = ({
+  rating,
+  name,
+  adress,
+  pic,
+}: {
+  rating: number;
+  name: string;
+  adress: string;
+  pic: string;
+}) => {
+  return (
+    <div>
+      <div className="text-xl mt-5 text-center font-black font-Jet">
+        Check Evaluations of{" "}
+        <span className="italic text-blue-500">{name}</span>
+      </div>
+      <div className="mt-5">
+        <ScrollArea className="h-[500px] w-full border border-slate-50/20 p-5 rounded-lg">
+          <RateTemplate name={"rafik"} comment={"i love you mom!"} rating={5} />
+        </ScrollArea>
+      </div>
+      <div className="mt-2">
+        <DialogClose asChild>
+          <Button variant={"ghost"}>Close</Button>
+        </DialogClose>
+      </div>
+    </div>
+  );
+};
+
+const RateTemplate = ({
+  name,
+  comment,
+  rating,
+}: {
+  name: string;
+  comment: string;
+  rating: number;
+}) => {
+  return (
+    <div className="p-2 border-b border-b-slate-50/20">
+      <div className="flex items-center justify-between">
+        <div className="text-xl font-Jet font-bold flex items-center gap-2">
+          <div>
+            <User size={20} />
+          </div>
+          <div>{name}</div>
+        </div>
+        <div
+          className={buttonVariants({
+            variant: "ghost",
+            size: "sm",
+          })}
+        >
+          {rating}/10
+        </div>
+      </div>
+      <div className="text-sm font-light opacity-75 p-5 py-2">{comment}</div>
     </div>
   );
 };
