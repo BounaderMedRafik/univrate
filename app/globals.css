@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-gradient-to-br from-neutral-900 to-neutral-800 min-h-screen text-slate-50;
+  }
+}
+
+@layer components {
+  .wrapper {
+    @apply max-w-6xl mx-auto p-4;
+  }
+}
