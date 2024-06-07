@@ -11,6 +11,7 @@ const buttonVariants = cva(
       variant: {
         default: "bg-blue-500 hover:bg-blue-600",
         link: "text-slate-50 underline-offset-4 hover:underline ",
+        danger: " bg-red-500 text-slate-50 hover:bg-red-600 transition-all",
         ghost:
           "bg-slate-50/10 border border-slate-50/10 hover:opacity-80 transition-all",
       },

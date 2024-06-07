@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { ClerkProvider, SignedOut } from "@clerk/nextjs";
+import { ClerkProvider } from "@clerk/nextjs";
 import Navigation from "@/components/layout/Navigation";
+import { EdgeStoreProvider } from "../lib/edgestore";
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,10 +21,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <ClerkProvider>
-        <body className={inter.className}>
-          <Navigation />
-          {children}
-        </body>
+        <EdgeStoreProvider>
+          <body className={inter.className}>
+            <Navigation />
+            {children}
+            <Toaster />
+          </body>
+        </EdgeStoreProvider>
       </ClerkProvider>
     </html>
   );

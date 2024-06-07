@@ -1,28 +1,12 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import { Button } from "../ui/button";
-import { Loader, University } from "lucide-react";
+import { University } from "lucide-react";
 import Link from "next/link";
-import {
-  RedirectToSignIn,
-  RedirectToSignUp,
-  SignInButton,
-  SignedOut,
-  UserButton,
-  useUser,
-} from "@clerk/nextjs";
-import { useRouter } from "next/navigation";
+import { SignInButton, UserButton, useUser } from "@clerk/nextjs";
+import DashBoardOptions from "../feed/DashBoardOptions";
 
 const Navigation = () => {
-  const router = useRouter();
-  const user = useUser();
-  const [loaded, setLoaded] = useState(true);
-
-  if (!user.isSignedIn && user.isLoaded) {
-    router.push("/");
-    setLoaded(false);
-  }
-
   return (
     <>
       <div className="border-b border-white/10">
@@ -36,15 +20,9 @@ const Navigation = () => {
             </div>
           </Link>
           <div>
-            {loaded ? (
-              <div>
-                <MyUserButton />
-              </div>
-            ) : (
-              <div>
-                <Loader className=" animate-spin" size={15} />
-              </div>
-            )}
+            <div>
+              <MyUserButton />
+            </div>
           </div>
         </div>
       </div>
@@ -58,6 +36,9 @@ const MyUserButton = () => {
     <div>
       {user.isSignedIn ? (
         <div className="flex items-center gap-2">
+          <div>
+            <DashBoardOptions />
+          </div>
           <div className="text-sm ">
             Hello{" "}
             <span className="font-semibold text-blue-500">
