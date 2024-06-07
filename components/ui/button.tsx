@@ -10,12 +10,15 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default: "bg-blue-500 hover:bg-blue-600",
-        link: "text-slate-900 underline-offset-4 hover:underline dark:text-slate-50",
+        link: "text-slate-50 underline-offset-4 hover:underline ",
+        ghost:
+          "bg-slate-50/10 border border-slate-50/10 hover:opacity-80 transition-all",
       },
       size: {
         default: "h-10 px-4 py-2",
         lg: "h-8 rounded-full px-10",
         icon: "h-10 w-10",
+        sm: "px-3 py-0.5 text-xs",
       },
     },
     defaultVariants: {

@@ -1,6 +1,9 @@
+"use client";
 import React from "react";
-import { Button } from "../ui/button";
-import { ChevronRight } from "lucide-react";
+import { Button, buttonVariants } from "../ui/button";
+import { ArrowRight, ChevronRight } from "lucide-react";
+import { SignUpButton, useUser } from "@clerk/nextjs";
+import Link from "next/link";
 
 const Hero = () => {
   return (
@@ -17,12 +20,12 @@ const Hero = () => {
         <div className="relative z-10">
           <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-16">
             <div className="max-w-2xl text-center mx-auto">
-              <p className="inline-block text-sm bg-slate-50/50 border border-slate-50/20 px-10 py-2 rounded-full  bg-clip-text bg-gradient-to-l text-slate-50 font-bold text-transparent">
+              <p className="inline-block text-sm bg-slate-50/50 border border-slate-50/20 px-10 py-2 rounded-full  bg-clip-text bg-gradient-to-l text-slate-50  font-light">
                 Vote for you favourite university
               </p>
 
               <div className="mt-5 max-w-2xl">
-                <h1 className="block  text-slate-100 font-mono font-black text-4xl md:text-5xl lg:text-6xl">
+                <h1 className="block  text-slate-100 font-Jet font-black text-4xl md:text-5xl lg:text-6xl">
                   UnivRate is your raing platform
                 </h1>
               </div>
@@ -37,19 +40,47 @@ const Hero = () => {
               </div>
 
               <div className="mt-8 gap-3 flex justify-center">
-                <Button>
-                  <div className="flex items-center gap-2">
-                    <div>Start Now</div>
-                    <div>
-                      <ChevronRight size={15} />
-                    </div>
-                  </div>
-                </Button>
+                <MyFeedToButton />
               </div>
             </div>
           </div>
         </div>
       </div>
+    </div>
+  );
+};
+
+const MyFeedToButton = () => {
+  const user = useUser();
+  return (
+    <div>
+      {user.isSignedIn ? (
+        <div>
+          <Link
+            href={"/feed"}
+            className={buttonVariants({
+              variant: "link",
+            })}
+          >
+            <div className="flex items-center gap-2">
+              Go Check universities <ArrowRight size={15} />
+            </div>
+          </Link>
+        </div>
+      ) : (
+        <div>
+          <SignUpButton mode="modal">
+            <Button>
+              <div className="flex items-center gap-2">
+                <div>Start Now</div>
+                <div>
+                  <ChevronRight size={15} />
+                </div>
+              </div>
+            </Button>
+          </SignUpButton>
+        </div>
+      )}
     </div>
   );
 };
