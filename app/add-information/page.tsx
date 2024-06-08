@@ -10,8 +10,8 @@ import { Loader } from "lucide-react";
 
 export default function page() {
   const { user } = useUser();
-  const [name, setName] = useState(user?.fullName);
-  const [email, setEmail] = useState(user?.emailAddresses[0].emailAddress);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [univ, setUniv] = useState("");
   const [Citation, setCitation] = useState("");
   const [grade, setGrade] = useState("");
@@ -34,9 +34,9 @@ export default function page() {
 
     if (error) {
       console.log(error);
-      toast.error("There is an error");
+      toast.error("Il y a une erreur");
     } else {
-      toast.success("You Have added information successfully");
+      toast.success("Vous avez ajouté des informations avec succès");
       setLoading(false);
     }
   };
@@ -58,14 +58,14 @@ export default function page() {
                 className="mt-2"
                 type="text"
                 //@ts-ignore
-                placeholder={name}
+                placeholder={user?.fullName}
               />
             </div>
             <div className="mt-4">
               <Label>E-mail</Label>
               <Input
                 className="mt-2"
-                placeholder={email}
+                placeholder={user?.emailAddresses[0].emailAddress}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 type="text"
@@ -102,7 +102,7 @@ export default function page() {
               />
             </div>
             <div className="text-red-500 font-light mt-2">
-              {error ? "please fill out the form correctly" : ""}
+              {error ? "veuillez remplir correctement le formulaire" : ""}
             </div>
             <div className="mt-5">
               <Button

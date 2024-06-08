@@ -48,7 +48,7 @@ const MyUserButton = () => {
               href={"/feed"}
             >
               <div className="flex items-center gap-2">
-                <div>Feed</div>
+                <div>accueil</div>
                 <div>
                   <Home size={12} />
                 </div>
@@ -64,7 +64,7 @@ const MyUserButton = () => {
               href={"/add-information"}
             >
               <div className="flex items-center gap-2">
-                <div>Add information</div>
+                <div>Ajouter des informations</div>
                 <div>
                   <ArrowRight size={12} />
                 </div>
@@ -73,7 +73,7 @@ const MyUserButton = () => {
           </div>
 
           <div className="text-sm ">
-            Hello{" "}
+            Bonjour{" "}
             <span className="font-semibold text-blue-500">
               {user.user?.firstName}
             </span>
@@ -84,7 +84,7 @@ const MyUserButton = () => {
       ) : (
         <div>
           <SignInButton mode="modal">
-            <Button size={"lg"}>Start Now</Button>
+            <Button size={"lg"}>Commencez maintenant</Button>
           </SignInButton>
         </div>
       )}

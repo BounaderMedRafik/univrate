@@ -45,12 +45,12 @@ const page = () => {
           <div>
             <ArrowRight size={15} />
           </div>
-          Universities
+          Les universités
         </div>
         <div>
           <Button size={"sm"} variant={"ghost"}>
             <div className="flex items-center gap-2">
-              sort by{" "}
+              Trier par{" "}
               <div>
                 <ChevronDown size={12} />
               </div>
@@ -132,7 +132,9 @@ const UnivItem = ({
             <div>
               <Star className=" fill-blue-500" size={21} />
             </div>
-            <div>{average ? `${average.toFixed(1)}/10` : `No Rating`}</div>
+            <div>
+              {average ? `${average.toFixed(1)}/10` : `Pas de notation`}
+            </div>
           </div>
           <div>
             <div>
@@ -155,11 +157,11 @@ const UnivItem = ({
               </Dialog>
               <Dialog>
                 <DialogTrigger asChild>
-                  <Button size={"sm"}>Evaluation</Button>
+                  <Button size={"sm"}>Évaluation</Button>
                 </DialogTrigger>
                 <DialogContent>
                   <UnivDialog
-                    rating={rating}
+                    rating={average}
                     name={name}
                     adress={adress}
                     pic={pic}
@@ -192,6 +194,7 @@ const UnivDialog = ({
   const [userName, setUserName] = useState(user?.fullName);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [evals, setEvals] = useState([{}]);
 
   const insertEval = async () => {
     setLoading(true);
@@ -207,6 +210,7 @@ const UnivDialog = ({
       Comment: comment,
       university: name,
     });
+
     setLoading(false);
     setSuccess(true);
   };
@@ -230,10 +234,24 @@ const UnivDialog = ({
                 <div>
                   <Star className=" fill-blue-500" size={21} />
                 </div>
-                <div>{rating}/10</div>
+                <div>{rating ? `${rating}/10` : "Pas de notation"}</div>
               </div>
               <div>
-                <Button variant={"link"}>1523 evaluation ↗</Button>
+                <Button variant={"link"}>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <div>evaluation ↗</div>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <CheckEval
+                        rating={rating}
+                        name={name}
+                        adress={adress}
+                        pic={pic}
+                      />
+                    </DialogContent>
+                  </Dialog>
+                </Button>
               </div>
             </div>
             <div className="mt-4 flex flex-col">
@@ -258,7 +276,7 @@ const UnivDialog = ({
               />
             </div>
             <div className="mt-1 text-red-500">
-              {error ? "please  fill all fields correctly" : ""}
+              {error ? "veuillez remplir tous les champs correctement" : ""}
             </div>
             <div className="mt-5">
               <Button
@@ -307,7 +325,9 @@ const SuccessPage = () => {
         éclairés.
       </div>
       <div className="mt-4 flex justify-center items-center">
-        <Button size={"lg"}>Vérifiez votre evaluation</Button>
+        <DialogClose asChild>
+          <Button size={"lg"}>Vérifiez votre evaluation</Button>
+        </DialogClose>
       </div>
     </div>
   );
@@ -342,7 +362,7 @@ const CheckEval = ({
   return (
     <div>
       <div className="text-xl mt-5 text-center font-black font-Jet">
-        Check Evaluations of{" "}
+        Vérifiez les évaluations de{" "}
         <span className="italic text-blue-500">{name}</span>
       </div>
       <div className="mt-5">
@@ -363,7 +383,7 @@ const CheckEval = ({
       </div>
       <div className="mt-2">
         <DialogClose asChild>
-          <Button variant={"ghost"}>Close</Button>
+          <Button variant={"ghost"}>Fermer</Button>
         </DialogClose>
       </div>
     </div>

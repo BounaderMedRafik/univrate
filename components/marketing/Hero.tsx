@@ -21,21 +21,21 @@ const Hero = () => {
           <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-16">
             <div className="max-w-2xl text-center mx-auto">
               <p className="inline-block text-sm bg-slate-50/50 border border-slate-50/20 px-10 py-2 rounded-full  bg-clip-text bg-gradient-to-l text-slate-50  font-light">
-                Vote for you favourite university
+                Votez pour votre université préférée
               </p>
 
               <div className="mt-5 max-w-2xl">
                 <h1 className="block  text-slate-100 font-Jet font-black text-4xl md:text-5xl lg:text-6xl">
-                  UnivRate is your raing platform
+                  UnivRate est votre plateforme de notation
                 </h1>
               </div>
 
               <div className="mt-5 max-w-3xl">
                 <p className=" text-gray-50/50">
-                  Show drafts volume_up UnivRate is your one-stop shop for
-                  campus ratings! From professors and classes to dorms and
-                  dining halls, leave your reviews and discover the best (or
-                  worst) that your university has to offer.
+                  UnivRate est votre guichet unique pour les évaluations des
+                  campus! Depuis professeurs et classes aux dortoirs et aux
+                  réfectoires, laissez votre critiques et découvrez le meilleur
+                  (ou le pire) que votre université a à offrir.
                 </p>
               </div>
 
@@ -63,7 +63,7 @@ const MyFeedToButton = () => {
             })}
           >
             <div className="flex items-center gap-2">
-              Go Check universities <ArrowRight size={15} />
+              Allez vérifier les universités <ArrowRight size={15} />
             </div>
           </Link>
         </div>
@@ -72,7 +72,7 @@ const MyFeedToButton = () => {
           <SignUpButton mode="modal">
             <Button>
               <div className="flex items-center gap-2">
-                <div>Start Now</div>
+                <div>Commencez maintenant</div>
                 <div>
                   <ChevronRight size={15} />
                 </div>

@@ -57,7 +57,7 @@ const DashBoardOptions = () => {
           <DropdownMenuTrigger asChild>
             <Button variant={"ghost"} size={"sm"}>
               <div className="flex items-center gap-2">
-                <div>Admin Options</div>
+                <div>Options d'administration</div>
                 <div>
                   <ChevronDown size={15} />
                 </div>
@@ -80,7 +80,7 @@ const MyDropContentLol = () => {
         <DialogTrigger asChild>
           <Button variant={"link"} size={"sm"}>
             <div className="flex items-center gap-2">
-              <div>Add university</div>
+              <div>Ajouter une université</div>
               <div>
                 <Plus size={12} />
               </div>
@@ -96,7 +96,7 @@ const MyDropContentLol = () => {
         <DialogTrigger asChild>
           <Button variant={"link"} size={"sm"}>
             <div className="flex items-center gap-2">
-              <div>Add Admin</div>
+              <div>Ajouter un administrateur</div>
               <div>
                 <Crown size={12} />
               </div>
@@ -130,15 +130,17 @@ const ChangeOwnerShip = () => {
       });
 
       setLoading(false);
-      toast.success(`You Have Added ${username} as admin`);
+      toast.success(`Vous avez ajouté ${username} en tant qu'administrateur`);
     }
   };
 
   return (
     <div className="py-5">
-      <div className="text-3xl font-black font-Jet text-center">Add Admin</div>
+      <div className="text-3xl font-black font-Jet text-center">
+        Ajouter un administrateur
+      </div>
       <div className="mt-4">
-        <Label>Write down the next Admin email</Label>
+        <Label>Notez le prochain e-mail de l'administrateur</Label>
         <Input
           className="mt-1"
           type="email"
@@ -148,7 +150,7 @@ const ChangeOwnerShip = () => {
         />
       </div>
       <div className="mt-3">
-        <Label>Write down the next Admin username</Label>
+        <Label>Notez le prochain nom d'utilisateur administrateur</Label>
         <Input
           className="mt-1"
           type="text"
@@ -159,13 +161,13 @@ const ChangeOwnerShip = () => {
       </div>
       <div className="mt-1">
         <div className="text-sm text-red-500 ">
-          {error ? "Please fill in all fields" : ""}
+          {error ? "Merci de remplir tous les champs" : ""}
         </div>
       </div>
 
       <div className="mt-4 flex items-center gap-2">
         <DialogClose asChild>
-          <Button variant={"danger"}>Close</Button>
+          <Button variant={"danger"}>Fermer</Button>
         </DialogClose>
         <Button onClick={insertAdmin} disabled={loading}>
           {loading ? (
@@ -174,7 +176,7 @@ const ChangeOwnerShip = () => {
             </div>
           ) : (
             <div className="flex items-center gap-2">
-              <div>Add</div>
+              <div>Ajouter</div>
               <div>
                 <Plus size={13} />
               </div>
@@ -215,7 +217,7 @@ const AddUniv = () => {
 
       setLoading(false);
 
-      toast.success(`You have added a new university ${name}`);
+      toast.success(`Vous avez ajouté une nouvelle université ${name}`);
       setRefreshing(true);
     }
   };
@@ -223,10 +225,10 @@ const AddUniv = () => {
   return (
     <div>
       <div className="text-3xl font-black font-Jet text-center">
-        Add University
+        Ajouter une université
       </div>
       <div className="mt-3">
-        <Label>university name</Label>
+        <Label>Nom de l'université</Label>
         <Input
           className="mt-1"
           type="text"
@@ -236,7 +238,7 @@ const AddUniv = () => {
         />
       </div>
       <div className="mt-3">
-        <Label>university Location</Label>
+        <Label>Emplacement de l'université</Label>
         <Input
           className="mt-1"
           type="text"
@@ -246,7 +248,7 @@ const AddUniv = () => {
         />
       </div>
       <div className="mt-3">
-        <Label>university picture</Label>
+        <Label>photo de l'université</Label>
         <div>
           <SingleImageDropzone
             className="mt-1"
@@ -262,12 +264,12 @@ const AddUniv = () => {
       </div>
       <div>
         <div className="text-sm text-red-500">
-          {error ? "Please fill all fields" : ""}
+          {error ? "Merci de compléter tous les champs" : ""}
         </div>
       </div>
       <div className="mt-4 flex items-center gap-2">
         <DialogClose asChild>
-          <Button variant={"danger"}>Cancel</Button>
+          <Button variant={"danger"}>Annuler</Button>
         </DialogClose>
         <Button
           onClick={() => {
@@ -283,7 +285,7 @@ const AddUniv = () => {
           ) : (
             <div>
               <div className="flex items-center gap-2">
-                <div>Add</div>
+                <div>Ajouter</div>
                 <div>
                   <Plus size={13} />
                 </div>
@@ -303,7 +305,7 @@ const AddUniv = () => {
                   </Button>
                 </a>
               </TooltipTrigger>
-              <TooltipContent>refresh the feed page</TooltipContent>
+              <TooltipContent>actualiser la page d'accueil</TooltipContent>
             </Tooltip>
           </TooltipProvider>
         ) : null}
