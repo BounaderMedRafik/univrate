@@ -54,7 +54,7 @@ const DashBoardOptions = () => {
           <DropdownMenuTrigger asChild>
             <Button variant={"ghost"} size={"sm"}>
               <div className="flex items-center gap-2">
-                <div>Options d'administration</div>
+                <div>Options d&apos;administration</div>
                 <div>
                   <ChevronDown size={15} />
                 </div>
@@ -127,7 +127,9 @@ const ChangeOwnerShip = () => {
       });
 
       setLoading(false);
-      toast.success(`Vous avez ajouté ${username} en tant qu'administrateur`);
+      toast.success(
+        `Vous avez ajouté ${username} en tant qu&apos;administrateur`
+      );
     }
   };
 
@@ -137,7 +139,7 @@ const ChangeOwnerShip = () => {
         Ajouter un administrateur
       </div>
       <div className="mt-4">
-        <Label>Notez le prochain e-mail de l'administrateur</Label>
+        <Label>Notez le prochain e-mail de l&apos;administrateur</Label>
         <Input
           className="mt-1"
           type="email"
@@ -147,7 +149,7 @@ const ChangeOwnerShip = () => {
         />
       </div>
       <div className="mt-3">
-        <Label>Notez le prochain nom d'utilisateur administrateur</Label>
+        <Label>Notez le prochain nom d&apos;utilisateur administrateur</Label>
         <Input
           className="mt-1"
           type="text"
@@ -225,7 +227,7 @@ const AddUniv = () => {
         Ajouter une université
       </div>
       <div className="mt-3">
-        <Label>Nom de l'université</Label>
+        <Label>Nom de l&apos;université</Label>
         <Input
           className="mt-1"
           type="text"
@@ -235,7 +237,7 @@ const AddUniv = () => {
         />
       </div>
       <div className="mt-3">
-        <Label>Emplacement de l'université</Label>
+        <Label>Emplacement de l&apos;université</Label>
         <Input
           className="mt-1"
           type="text"
@@ -245,7 +247,7 @@ const AddUniv = () => {
         />
       </div>
       <div className="mt-3">
-        <Label>photo de l'université</Label>
+        <Label>photo de l&apos;université</Label>
         <div>
           <SingleImageDropzone
             className="mt-1"
@@ -302,7 +304,7 @@ const AddUniv = () => {
                   </Button>
                 </a>
               </TooltipTrigger>
-              <TooltipContent>actualiser la page d'accueil</TooltipContent>
+              <TooltipContent>actualiser la page d&apos;accueil</TooltipContent>
             </Tooltip>
           </TooltipProvider>
         ) : null}

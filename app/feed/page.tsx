@@ -144,7 +144,7 @@ const UnivItem = ({
             <div className="flex items-center justify-end">
               <Dialog>
                 <DialogTrigger asChild>
-                  <Button variant={"link"}>vérifier l'évaluation ↗</Button>
+                  <Button variant={"link"}>vérifier l&apos;évaluation ↗</Button>
                 </DialogTrigger>
                 <DialogContent>
                   <CheckEval
@@ -255,7 +255,7 @@ const UnivDialog = ({
               </div>
             </div>
             <div className="mt-4 flex flex-col">
-              <Label>Évaluez l'université</Label>
+              <Label>Évaluez l&apos;université</Label>
               <Input
                 className="mt-1"
                 min={0}
@@ -321,8 +321,8 @@ const SuccessPage = () => {
       </div>
       <div className="text-center text-sm mt-2 opacity-75 font-light max-w-md">
         Merci pour votre avis!,Votre avis sera examiné par un modérateur avant
-        d'être publié.Votre avis aidera les autres étudiants à faire des choix
-        éclairés.
+        d&apos;être publié.Votre avis aidera les autres étudiants à faire des
+        choix éclairés.
       </div>
       <div className="mt-4 flex justify-center items-center">
         <DialogClose asChild>
