@@ -7,20 +7,11 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useUser } from "@clerk/nextjs";
-
 import { ArrowRight, ChevronDown, Loader, Star, User } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import supabase from "../supabase/supabaseClient";
-import { Slider } from "@/components/ui/slider";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
@@ -30,7 +21,7 @@ const page = () => {
 
   useEffect(() => {
     const fetchUnivs = async () => {
-      setLoading(true); // set loading to true when fetching
+      setLoading(true);
       const { data, error } = await supabase.from("universities").select("*");
 
       if (data) {
@@ -41,7 +32,7 @@ const page = () => {
       if (error) {
         console.log(error);
       }
-      setLoading(false); // set loading to false when done
+      setLoading(false);
     };
 
     fetchUnivs();
@@ -105,6 +96,30 @@ const UnivItem = ({
   adress: string;
   pic: string;
 }) => {
+  const [Ratings, setRatings] = useState([{}]);
+  useEffect(() => {
+    const fetchRating = async () => {
+      const { data, error } = await supabase
+        .from("evaluations")
+        .select("Rating")
+        .eq("university", name);
+      if (data) {
+        setRatings(data);
+      } else {
+        console.log(error);
+      }
+    };
+
+    fetchRating();
+  }, []);
+  let sum = 0;
+  Ratings.forEach((item) => {
+    //@ts-ignore
+    sum += item.Rating;
+  });
+
+  const average = sum / Ratings.length;
+
   return (
     <div className=" w-full h-96 relative overflow-hidden border-slate-50/20 border rounded-lg">
       <div className="h-full w-full overflow-hidden ">
@@ -117,7 +132,7 @@ const UnivItem = ({
             <div>
               <Star className=" fill-blue-500" size={21} />
             </div>
-            <div>{rating}/10</div>
+            <div>{average ? `${average.toFixed(1)}/10` : `No Rating`}</div>
           </div>
           <div>
             <div>
@@ -126,7 +141,7 @@ const UnivItem = ({
             </div>
             <div className="flex items-center justify-end">
               <Dialog>
-                <DialogTrigger>
+                <DialogTrigger asChild>
                   <Button variant={"link"}>vérifier l'évaluation ↗</Button>
                 </DialogTrigger>
                 <DialogContent>
@@ -176,10 +191,16 @@ const UnivDialog = ({
   const [comment, setComment] = useState("");
   const [userName, setUserName] = useState(user?.fullName);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   const insertEval = async () => {
     setLoading(true);
     console.log(userName, rate, comment, name);
+    if (!userName || !rate || !comment || !name || rate < 0 || rate > 10) {
+      setError(true);
+      setLoading(false);
+      return;
+    }
     const { data, error } = await supabase.from("evaluations").insert({
       Name: userName,
       Rating: rate,
@@ -236,10 +257,14 @@ const UnivDialog = ({
                 className="mt-2"
               />
             </div>
+            <div className="mt-1 text-red-500">
+              {error ? "please  fill all fields correctly" : ""}
+            </div>
             <div className="mt-5">
               <Button
                 disabled={loading}
                 onClick={() => {
+                  setError(false);
                   insertEval();
                 }}
                 className="w-full"
@@ -299,6 +324,21 @@ const CheckEval = ({
   adress: string;
   pic: string;
 }) => {
+  const [comment, setComment] = useState([{}]);
+
+  useEffect(() => {
+    const fetchComment = async () => {
+      const { data, error } = await supabase
+        .from("evaluations")
+        .select("*")
+        .eq("university", name);
+      //@ts-ignore
+      setComment(data);
+    };
+
+    fetchComment();
+  }, []);
+
   return (
     <div>
       <div className="text-xl mt-5 text-center font-black font-Jet">
@@ -307,7 +347,18 @@ const CheckEval = ({
       </div>
       <div className="mt-5">
         <ScrollArea className="h-[500px] w-full border border-slate-50/20 p-5 rounded-lg">
-          <RateTemplate name={"rafik"} comment={"i love you mom!"} rating={5} />
+          {comment.map((item, i) => (
+            <div className="mt-1" key={i}>
+              <RateTemplate
+                //@ts-ignore
+                name={item.Name}
+                //@ts-ignore
+                comment={item.Comment}
+                //@ts-ignore
+                rating={item.Rating}
+              />
+            </div>
+          ))}
         </ScrollArea>
       </div>
       <div className="mt-2">
@@ -342,6 +393,12 @@ const RateTemplate = ({
             variant: "ghost",
             size: "sm",
           })}
+          style={{
+            backgroundColor:
+              rating > 7.5 ? "#00BA47" : rating < 4 ? "#BA0000" : "#BA7A00",
+
+            cursor: "default",
+          }}
         >
           {rating}/10
         </div>

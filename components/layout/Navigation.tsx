@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
-import { Button } from "../ui/button";
-import { University } from "lucide-react";
+import { Button, buttonVariants } from "../ui/button";
+import { ArrowRight, Home, University } from "lucide-react";
 import Link from "next/link";
 import { SignInButton, UserButton, useUser } from "@clerk/nextjs";
 import DashBoardOptions from "../feed/DashBoardOptions";
@@ -39,12 +39,46 @@ const MyUserButton = () => {
           <div>
             <DashBoardOptions />
           </div>
+          <div>
+            <Link
+              className={buttonVariants({
+                variant: "ghost",
+                size: "sm",
+              })}
+              href={"/feed"}
+            >
+              <div className="flex items-center gap-2">
+                <div>Feed</div>
+                <div>
+                  <Home size={12} />
+                </div>
+              </div>
+            </Link>
+          </div>
+          <div>
+            <Link
+              className={buttonVariants({
+                variant: "ghost",
+                size: "sm",
+              })}
+              href={"/add-information"}
+            >
+              <div className="flex items-center gap-2">
+                <div>Add information</div>
+                <div>
+                  <ArrowRight size={12} />
+                </div>
+              </div>
+            </Link>
+          </div>
+
           <div className="text-sm ">
             Hello{" "}
             <span className="font-semibold text-blue-500">
               {user.user?.firstName}
             </span>
           </div>
+
           <UserButton />
         </div>
       ) : (

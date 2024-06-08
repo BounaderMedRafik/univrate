@@ -2,7 +2,7 @@
 import { useUser } from "@clerk/nextjs";
 import React, { useEffect, useState } from "react";
 import { Button } from "../ui/button";
-import { ChevronDown, Crown, Loader, Plus } from "lucide-react";
+import { ChevronDown, Crown, Loader, Plus, RotateCcw } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,10 +20,15 @@ import supabase from "@/app/supabase/supabaseClient";
 import { useEdgeStore } from "@/lib/edgestore";
 import { SingleImageDropzone } from "../ui/EdgeStoreUploader";
 import toast from "react-hot-toast";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../ui/tooltip";
 
 const DashBoardOptions = () => {
   const { user } = useUser();
-  const [admins, setAdmins] = useState([{}]);
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
@@ -188,6 +193,7 @@ const AddUniv = () => {
   const { edgestore } = useEdgeStore();
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   const insertUniv = async () => {
     if (!name || !location || !file) {
@@ -208,7 +214,9 @@ const AddUniv = () => {
       });
 
       setLoading(false);
+
       toast.success(`You have added a new university ${name}`);
+      setRefreshing(true);
     }
   };
 
@@ -283,6 +291,22 @@ const AddUniv = () => {
             </div>
           )}
         </Button>
+        {refreshing ? (
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <a href="/feed">
+                  <Button variant={"ghost"} size={"icon"} onClick={() => {}}>
+                    <div>
+                      <RotateCcw size={15} />
+                    </div>
+                  </Button>
+                </a>
+              </TooltipTrigger>
+              <TooltipContent>refresh the feed page</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        ) : null}
       </div>
     </div>
   );
