@@ -37,10 +37,7 @@ const DashBoardOptions = () => {
 
       if (data) {
         data.map((person) => {
-          if (
-            person.email == user?.emailAddresses[0].emailAddress ||
-            person.username == user?.username
-          ) {
+          if (person.email == user?.emailAddresses[0].emailAddress) {
             setIsAdmin(true);
           }
         });
